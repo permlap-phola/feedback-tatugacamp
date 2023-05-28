@@ -1,118 +1,196 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Head from "next/head";
+import Image from "next/image";
+import CssBaseline from "@mui/material/CssBaseline";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import { useQuery } from "@tanstack/react-query";
+import { GetFeedbacks } from "../service/feedbacks";
+import { AiFillWarning } from "react-icons/ai";
+import { RiFunctionLine } from "react-icons/ri";
+import { MdOutlineMoodBad } from "react-icons/md";
+import Pagination from "@mui/material/Pagination";
 
-const inter = Inter({ subsets: ['latin'] })
+import { BiHappyBeaming } from "react-icons/bi";
+import { useState } from "react";
+import { Skeleton } from "@mui/material";
+import PopUpFeedback from "@/components/feedback/pop-up-feedback";
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary">
+      {"Copyright © "}
+      <Link color="inherit" href="https://tatugacamp.com/classroom">
+        tatuga class
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const loadingSketion = () => {
+  return (
+    <div className="grid grid-cols-3 w-full  gap-6 place-items-center mb-10">
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+      <Skeleton variant="rounded" width={400} height={112} />
+    </div>
+  );
+};
 
 export default function Home() {
+  const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [activeFeedback, setActiveFeedback] = useState();
+  const feedbacks = useQuery(
+    ["feedbacks", page],
+    () => GetFeedbacks({ page: page }),
+    { keepPreviousData: true }
+  );
+
+  const handleOpenFeedback = (trigger) => {
+    setOpen(() => trigger);
+  };
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <div className="bg-gradient-to-b from-blue-400 to-orange-200">
+      <Head>
+        <title>feedback - tatuga class</title>
+        <link
+          rel="icon"
+          href="https://tatugacamp.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Ftatugacamp.com%2Flogo%2520%2Ftatugacamp%2520facebook.jpg&w=256&q=100"
         />
-      </div>
+      </Head>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
+          <Typography variant="h2" component="h1" gutterBottom>
+            <span className="text-sky-50 drop-shadow-lg uppercase    font-Poppins font-semibold">
+              feedbacks
             </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          </Typography>
+        </Container>
+        {open && (
+          <PopUpFeedback
+            handleOpenFeedback={handleOpenFeedback}
+            body={activeFeedback?.body}
+            date={activeFeedback?.date}
+            tag={activeFeedback?.tag}
+          />
+        )}
+        {feedbacks.isLoading ? (
+          loadingSketion()
+        ) : (
+          <main className="grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3  gap-6 place-items-center mb-10">
+            {feedbacks?.data?.feedbacks?.map((feedback) => {
+              const date = new Date(feedback.createAt);
+              const formattedDate = date.toLocaleDateString("th-TH", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              });
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+              return (
+                <button
+                  key={feedback.id}
+                  onClick={() => {
+                    document.body.style.overflow = "hidden";
+                    setActiveFeedback(() => {
+                      return {
+                        body: feedback.body,
+                        tag: feedback.tag,
+                        date: formattedDate,
+                      };
+                    });
+                    handleOpenFeedback(true);
+                  }}
+                  className="lg:w-96 md:w-80 w-72   duration-150 active:ring-2 hover:scale-110 transition group hover:bg-slate-600 cursor-pointer
+               bg-white h-28 rounded-2xl shadow-lg p-7 pb-2 font-Kanit flex flex-col justify-between items-start "
+                >
+                  <div className="flex gap-2">
+                    <h2 className="text-blue-600 font-semibold text-xl group-hover:text-white">
+                      {feedback.tag}
+                    </h2>
+                    {feedback.tag === "ข้อผิดพลาด" && (
+                      <div className="text-xl text-red-500 flex items-center justify-start">
+                        <AiFillWarning />
+                      </div>
+                    )}
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+                    {feedback.tag === "ขอฟังชั่นเพิ่ม" && (
+                      <div className="text-xl text-blue-400 flex items-center justify-start">
+                        <RiFunctionLine />
+                      </div>
+                    )}
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
+                    {feedback.tag === "ร้องเรียน" && (
+                      <div className="text-xl text-orange-400 flex items-center justify-start">
+                        <MdOutlineMoodBad />
+                      </div>
+                    )}
+
+                    {(feedback.tag === "ให้กำลังใจ   " ||
+                      feedback.tag === "ให้กำลังใจ") && (
+                      <div className="text-xl text-green-500 flex items-center justify-start">
+                        <BiHappyBeaming />
+                      </div>
+                    )}
+                  </div>
+
+                  <div
+                    className="text-md font-Kanit break-words h-20 w-full overflow-hidden group-hover:text-white"
+                    dangerouslySetInnerHTML={{ __html: feedback.body }}
+                  />
+                  <div className="w-full flex justify-end ">
+                    <span className="font-normal font-Poppins group-hover:text-white">
+                      {formattedDate}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </main>
+        )}
+
+        <footer className="w-full mb-2 flex items-center justify-center">
+          <Pagination
+            count={feedbacks?.data?.totalPages}
+            onChange={(e, page) => setPage(page)}
+          />
+        </footer>
+        <Box
+          component="footer"
+          sx={{
+            py: 3,
+            px: 2,
+            mt: "auto",
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[200]
+                : theme.palette.grey[800],
+          }}
         >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+          <Container maxWidth="sm">
+            <Copyright />
+          </Container>
+        </Box>
+      </Box>
+    </div>
+  );
 }
