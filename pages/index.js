@@ -111,7 +111,7 @@ export default function Home() {
                   <Skeleton variant="rectangular" width={80} height={100} />
                 </div>
               ) : (
-                <span className="font-Poppins text-right font-semibold text-5xl md:text-8xl flex text-white">
+                <span className="font-Poppins text-right font-semibold text-2xl md:text-8xl flex text-white">
                   {inView && (
                     <NumberAnimated n={usersNumber?.data?.data.userNumber} />
                   )}
@@ -135,7 +135,7 @@ export default function Home() {
                   <Skeleton variant="rectangular" width={80} height={100} />
                 </div>
               ) : (
-                <span className="font-Poppins text-right font-semibold flex text-5xl md:text-8xl text-white">
+                <span className="font-Poppins text-right font-semibold flex text-2xl md:text-8xl text-white">
                   {inView && (
                     <NumberAnimated
                       n={studentNumber?.data?.data.studentNumber}
