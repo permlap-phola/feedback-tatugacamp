@@ -12,11 +12,13 @@ import { AiFillWarning } from "react-icons/ai";
 import { RiFunctionLine } from "react-icons/ri";
 import { MdOutlineMoodBad } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
-
+import { useInView } from "react-intersection-observer";
 import { BiHappyBeaming } from "react-icons/bi";
 import { useState } from "react";
 import { Skeleton } from "@mui/material";
 import PopUpFeedback from "@/components/feedback/pop-up-feedback";
+import NumberAnimated from "@/components/animation/numberAnimated";
+import { GetNumberStudent, GetNumberUsers } from "@/service/overview";
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary">
@@ -51,6 +53,12 @@ const loadingSketion = () => {
 
 export default function Home() {
   const [page, setPage] = useState(1);
+  const [ref, inView] = useInView({
+    triggerOnce: false,
+    threshold: 0.1,
+  });
+  const usersNumber = useQuery(["number-user"], () => GetNumberUsers());
+  const studentNumber = useQuery(["number-student"], () => GetNumberStudent());
   const [open, setOpen] = useState(false);
   const [activeFeedback, setActiveFeedback] = useState();
   const feedbacks = useQuery(
@@ -86,6 +94,62 @@ export default function Home() {
             </span>
           </Typography>
         </Container>
+        <div
+          ref={ref}
+          className={`w-full   mt-10 h-full flex gap-10 font-Poppins 
+             items-center justify-center item-group square   `}
+          xyz="fade-100% up-1"
+        >
+          <div
+            className={`flex flex-col justify-center w-20 md:w-80  items-center gap-5 text-right ${
+              inView ? "xyz-in" : "xyz-out"
+            } `}
+          >
+            <div className="">
+              {usersNumber.isLoading ? (
+                <div>
+                  <Skeleton variant="rectangular" width={80} height={100} />
+                </div>
+              ) : (
+                <span className="font-Poppins text-right font-semibold text-5xl md:text-8xl flex text-white">
+                  {inView && (
+                    <NumberAnimated n={usersNumber?.data?.data.userNumber} />
+                  )}
+                </span>
+              )}
+            </div>
+
+            <span className="font-Poppins text-right font-semibold text-xl text-white">
+              Teachers
+            </span>
+          </div>
+          <div className="h-80 w-[2px] bg-white"></div>
+          <div
+            className={`flex flex-col jjustify-center w-20 md:w-80  items-center gap-5 text-right ${
+              inView ? "xyz-in" : "xyz-out"
+            } `}
+          >
+            <div className="">
+              {studentNumber.isLoading ? (
+                <div>
+                  <Skeleton variant="rectangular" width={80} height={100} />
+                </div>
+              ) : (
+                <span className="font-Poppins text-right font-semibold flex text-5xl md:text-8xl text-white">
+                  {inView && (
+                    <NumberAnimated
+                      n={studentNumber?.data?.data.studentNumber}
+                    />
+                  )}
+                </span>
+              )}
+            </div>
+
+            <span className="font-Poppins text-right font-semibold text-xl text-white">
+              Students
+            </span>
+          </div>
+        </div>
         {open && (
           <PopUpFeedback
             handleOpenFeedback={handleOpenFeedback}
