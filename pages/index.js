@@ -156,6 +156,7 @@ export default function Home() {
             body={activeFeedback?.body}
             date={activeFeedback?.date}
             tag={activeFeedback?.tag}
+            email={activeFeedback?.email}
           />
         )}
         {feedbacks.isLoading ? (
@@ -180,12 +181,13 @@ export default function Home() {
                         body: feedback.body,
                         tag: feedback.tag,
                         date: formattedDate,
+                        email: feedback?.email,
                       };
                     });
                     handleOpenFeedback(true);
                   }}
                   className="lg:w-96 md:w-80 w-72   duration-150 active:ring-2 hover:scale-110 transition group hover:bg-slate-600 cursor-pointer
-               bg-white h-28 rounded-2xl shadow-lg p-7 pb-2 font-Kanit flex flex-col justify-between items-start "
+               bg-white h-36 rounded-2xl shadow-lg p-7 pb-2 font-Kanit flex flex-col justify-between items-start "
                 >
                   <div className="flex gap-2">
                     <h2 className="text-blue-600 font-semibold text-xl group-hover:text-white">
@@ -221,6 +223,7 @@ export default function Home() {
                     className="text-md font-Kanit break-words h-20 w-full overflow-hidden group-hover:text-white"
                     dangerouslySetInnerHTML={{ __html: feedback.body }}
                   />
+
                   <div className="w-full flex justify-end ">
                     <span className="font-normal font-Poppins group-hover:text-white">
                       {formattedDate}

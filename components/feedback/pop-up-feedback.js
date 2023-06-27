@@ -4,7 +4,7 @@ import { BiHappyBeaming } from "react-icons/bi";
 import { FcBusinessContact, FcLineChart, FcViewDetails } from "react-icons/fc";
 import { MdOutlineMoodBad } from "react-icons/md";
 import { RiFunctionLine } from "react-icons/ri";
-function PopUpFeedback({ handleOpenFeedback, body, tag, date }) {
+function PopUpFeedback({ handleOpenFeedback, body, tag, date, email }) {
   return (
     <div>
       <div
@@ -12,7 +12,7 @@ function PopUpFeedback({ handleOpenFeedback, body, tag, date }) {
         top-0 right-0 left-0 bottom-0 m-auto fixed"
       >
         <div
-          className="flex w-max h-max max-h-96 max-w-7xl overflow-auto font-Kanit bg-white border-2 border-solid rounded-lg drop-shadow-xl p-5 z-20 
+          className="flex w-max h-max max-w-7xl font-Kanit bg-white border-2 border-solid rounded-lg drop-shadow-xl p-5 z-20 
     top-0 right-0 left-0 bottom-0 m-auto fixed"
         >
           <div className=" w-80 flex flex-col justify-center items-center ">
@@ -49,6 +49,7 @@ function PopUpFeedback({ handleOpenFeedback, body, tag, date }) {
             <div className="flex justify-end w-full text-slate-300">
               <span>{date}</span>
             </div>
+            <span>{email}</span>
             <button
               onClick={() => {
                 document.body.style.overflow = "auto";
